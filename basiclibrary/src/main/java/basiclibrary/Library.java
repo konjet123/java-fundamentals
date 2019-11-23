@@ -3,14 +3,84 @@
  */
 package basiclibrary;
 import java.lang.Math;
+import java.util.ArrayList;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Library {
     public int[] Roll(int lengthOfArray) {
         int[] newArray = new int[lengthOfArray];
-       for(int counter=0;counter<newArray.length; counter++) {
-            newArray[counter] = (int)Math.random() * 6 + 1;
+        for (int counter = 0; counter < newArray.length; counter++) {
+            newArray[counter] = (int) Math.random() * 6 + 1;
             System.out.println(newArray[counter]);
         }
         return newArray;
+    }
+
+    public String tally(ArrayList<String> arrayList) {
+        Set<String> hashsetKeys = new HashSet<>();
+        HashMap<String, Integer> dataMapper = new HashMap<>();
+        for (String str : arrayList) {
+            hashsetKeys.add(str);
+        }
+
+        int voteCounter=0;
+        int maxCounter =0;
+        String winner="";
+        for (String str : hashsetKeys) {
+            voteCounter=0;
+
+            for (String temp : arrayList) {
+                if(str==temp) {
+                    voteCounter++;
+                }
+                dataMapper.put(str,voteCounter);//not used yet
+                if (maxCounter<voteCounter) {
+                    maxCounter=voteCounter;
+                    winner=str;
+                }
+            }
+        }
+        return winner;
+    }
+
+    public void ProcessWeatherData() {
+        // Daily average temperatures for Seattle, October 1-28 2017
+        int[][] weeklyMonthTemperatures = {
+                {66, 64, 58, 65, 71, 57, 60},
+                {57, 65, 65, 70, 72, 65, 51},
+                {55, 54, 60, 53, 59, 57, 61},
+                {65, 56, 55, 52, 55, 62, 57}
+        };
+
+        int lowest = 0;
+        int highest = 0;
+        Set<Integer> hashsetKeys = new HashSet<>();
+
+        for (int rowNumber = 0; rowNumber < weeklyMonthTemperatures.length; rowNumber++) {
+            for (int columnPosition = 0; columnPosition < weeklyMonthTemperatures[rowNumber].length; columnPosition++) {
+                if (lowest == 0 & highest == 0) {
+                    lowest = highest = weeklyMonthTemperatures[rowNumber][columnPosition];
+                } else {
+
+                    if (weeklyMonthTemperatures[rowNumber][columnPosition] > highest) {
+                        highest = weeklyMonthTemperatures[rowNumber][columnPosition];
+                    }
+                    if (weeklyMonthTemperatures[rowNumber][columnPosition] < lowest) {
+                        lowest = weeklyMonthTemperatures[rowNumber][columnPosition];
+                    }
+                }
+                hashsetKeys.add(weeklyMonthTemperatures[rowNumber][columnPosition]);
+            }
+            System.out.println("High:" + highest);
+            System.out.println("Low: " + lowest);
+            for (int ctr = lowest; ctr < highest; ctr++) {
+                if (!hashsetKeys.contains(ctr)) {
+                    System.out.println("Never saw temperature: " + ctr );
+                }
+            }
+        }
     }
 }
